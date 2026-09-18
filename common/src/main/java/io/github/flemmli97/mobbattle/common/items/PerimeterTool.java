@@ -19,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -85,7 +86,7 @@ public class PerimeterTool extends Item implements ExtendedItem {
             ItemStack stack = player.getItemInHand(hand);
             if (stack.has(MobBattleDataComponents.PERIMETER_REMOVE.get())) {
                 PerimeterData.get(serverPlayer.level()).setPerimeter(serverPlayer.level(), null);
-                player.swing(hand, true);
+                player.swing(hand, SwingAnimation.DEFAULT, true);
             } else {
                 CrossPlatformStuff.INSTANCE.sendToClient(new S2CSpawnEggScreen(hand, S2CSpawnEggScreen.ScreenType.PERIMETER), serverPlayer);
             }

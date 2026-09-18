@@ -28,6 +28,12 @@ public class PerimeterGoal extends Goal {
         this.setFlags(EnumSet.of(Flag.MOVE));
     }
 
+
+    @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
     @Override
     public boolean canUse() {
         PerimeterData.Perimeter perimeter = PerimeterData.get((ServerLevel) this.mob.level()).perimeter();
@@ -66,7 +72,7 @@ public class PerimeterGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return !this.mob.getNavigation().isDone();
+        return !this.mob.getNavigation().isDone() && !this.perimeter.shouldTeleport(this.mob.position());
     }
 
     @Override

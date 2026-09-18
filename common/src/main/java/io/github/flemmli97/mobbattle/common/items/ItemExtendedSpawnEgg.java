@@ -29,6 +29,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityProcessor;
 import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntitySpawnRequest;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -233,7 +234,7 @@ public class ItemExtendedSpawnEgg extends Item implements ExtendedItem {
         TypedEntityData<EntityType<?>> data = stack.get(DataComponents.ENTITY_DATA);
         CompoundTag tag = data == null ? new CompoundTag() : data.copyTagWithoutId();
         tag.putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(type).toString());
-        return EntityType.loadEntityRecursive(tag, level, EntitySpawnReason.SPAWN_ITEM_USE, EntityProcessor.NOP);
+        return EntityType.loadEntityRecursive(tag, level, new EntitySpawnRequest(EntitySpawnReason.SPAWN_ITEM_USE, true), EntityProcessor.NOP);
     }
 
     public static Optional<EntityType<?>> getType(ItemStack stack) {

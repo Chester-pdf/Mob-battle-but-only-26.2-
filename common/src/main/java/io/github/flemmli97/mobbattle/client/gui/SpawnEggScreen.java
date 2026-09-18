@@ -1,5 +1,6 @@
 package io.github.flemmli97.mobbattle.client.gui;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import io.github.flemmli97.mobbattle.MobBattle;
 import io.github.flemmli97.mobbattle.client.gui.widget.SuggestionEditBox;
 import io.github.flemmli97.mobbattle.common.components.SpawnEggOptions;
@@ -7,7 +8,6 @@ import io.github.flemmli97.mobbattle.common.items.ItemExtendedSpawnEgg;
 import io.github.flemmli97.mobbattle.common.registry.MobBattleDataComponents;
 import io.github.flemmli97.mobbattle.network.C2SSpawnEgg;
 import io.github.flemmli97.mobbattle.platform.CrossPlatformStuff;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
@@ -18,6 +18,7 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.CommonColors;
 import net.minecraft.world.InteractionHand;
@@ -26,7 +27,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.lwjgl.glfw.GLFW;
 
 public class SpawnEggScreen extends Screen {
 
@@ -59,7 +59,7 @@ public class SpawnEggScreen extends Screen {
     protected void init() {
         super.init();
         if (this.entity == null) {
-            this.minecraft.setScreen(null);
+            this.minecraft.setScreenAndShow(null);
             return;
         }
         this.leftPos = this.width / 2 - (this.sizeX / 2);
@@ -79,7 +79,7 @@ public class SpawnEggScreen extends Screen {
         int xPadding = 16;
         int yOff = xPadding;
         int width = this.font.width(this.entity.getType().getDescription());
-        guiGraphics.text(this.font, this.entity.getType().getDescription(), (int) (this.leftPos + this.sizeX * 0.5f - width * 0.5f), this.topPos + yOff, ARGB.color(255, ChatFormatting.GOLD.getColor()));
+        guiGraphics.text(this.font, this.entity.getType().getDescription(), (int) (this.leftPos + this.sizeX * 0.5f - width * 0.5f), this.topPos + yOff, ARGB.color(255, TextColor.GOLD.getValue()));
         yOff += 16;
         guiGraphics.text(this.font, Component.translatable("mobbattle.gui.team"), this.leftPos + xPadding, this.topPos + yOff, CommonColors.WHITE);
         yOff += 16 + 20 + 8;
@@ -119,7 +119,7 @@ public class SpawnEggScreen extends Screen {
                 SuggestionEditBox.ofString(this.player.level().getScoreboard().getTeamNames())) {
             @Override
             public boolean charTyped(CharacterEvent event) {
-                if (event.codepoint() == GLFW.GLFW_KEY_SPACE)
+                if (event.codepoint() == InputConstants.KEY_SPACE)
                     return false;
                 return super.charTyped(event);
             }
@@ -182,7 +182,7 @@ public class SpawnEggScreen extends Screen {
         yOff = this.sizeY - padding - 20;
         this.addRenderableWidget(Button.builder(Component.translatable("mobbattle.gui.save"), b -> {
             CrossPlatformStuff.INSTANCE.sendToServer(new C2SSpawnEgg(this.hand, this.team, this.amount, this.spacing));
-            this.minecraft.setScreen(null);
+            this.minecraft.setScreenAndShow(null);
         }).bounds(this.leftPos + this.sizeX / 2 - 50, this.topPos + yOff, 100, 20).build());
     }
 

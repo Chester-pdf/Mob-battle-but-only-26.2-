@@ -8,7 +8,7 @@
     "EntityCanAttackMixin",
     "LivingMixin",
     "MobAccessor",
-    "SlimeMixin",
+    "CubeMobMixin",
     "WardenMixin",
     "WitherMixin"
   ],

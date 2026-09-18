@@ -17,7 +17,7 @@ public class MobBattleFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ItemTintSources.ID_MAPPER.put(BossBarItemColor.ID, BossBarItemColor.CODEC);
-        LevelRenderEvents.AFTER_SOLID_FEATURES.register((event) -> ClientHandler.render(event.poseStack()));
+        LevelRenderEvents.AFTER_SOLID_FEATURES.register((event) -> ClientHandler.render(event.poseStack(), event.submitNodeCollector(), event.levelState()));
         MenuScreens.register(MobBattleMenuTypes.ARMOR_MENU.get(), ArmorScreen::new);
         ClientHandler.registerKeyBinding(KeyMapping.Category::register, KeyMappingHelper::registerKeyMapping);
         ClientTickEvents.END_CLIENT_TICK.register(client -> ClientHandler.keyEvent());

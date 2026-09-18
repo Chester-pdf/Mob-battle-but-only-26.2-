@@ -5,6 +5,7 @@ import io.github.flemmli97.mobbattle.MobBattle;
 import io.github.flemmli97.mobbattle.common.registry.MobBattleDataComponents;
 import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.world.BossEvent;
@@ -23,7 +24,7 @@ public class BossBarItemColor implements ItemTintSource {
     @Override
     public int calculate(ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity livingEntity) {
         BossEvent.BossBarColor color = itemStack.getOrDefault(MobBattleDataComponents.BOSS_BAR_COLOR.get(), BossEvent.BossBarColor.WHITE);
-        return ARGB.color(255, color.getFormatting().getColor());
+        return ARGB.color(255, TextColor.fromLegacyFormat(color.getFormatting()).getValue());
     }
 
     @Override

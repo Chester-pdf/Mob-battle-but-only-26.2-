@@ -15,6 +15,6 @@ public class DataEvent {
         DataGenerator data = event.getGenerator();
         data.addProvider(true, new Lang(data.getPackOutput()));
         data.addProvider(true, new ItemModels(data.getPackOutput()));
-        data.addProvider(true, new EntityTagGen(data.getPackOutput(), event.getLookupProvider()));
+        data.addProvider(true, new EntityTagGen(data.getPackOutput(), event.getReloadableLookupProvider()));
     }
 }

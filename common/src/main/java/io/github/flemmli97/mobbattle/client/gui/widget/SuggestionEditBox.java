@@ -1,5 +1,6 @@
 package io.github.flemmli97.mobbattle.client.gui.widget;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.EditBox;
@@ -10,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.CommonColors;
 import net.minecraft.util.Mth;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Collection;
 import java.util.function.Consumer;
@@ -152,15 +152,15 @@ public class SuggestionEditBox extends EditBox {
     @Override
     public boolean keyPressed(KeyEvent keyEvent) {
         if (this.canConsumeInput()) {
-            if (keyEvent.key() == GLFW.GLFW_KEY_UP) {
+            if (keyEvent.key() == InputConstants.KEY_U) {
                 this.cycle(-1);
                 return true;
             }
-            if (keyEvent.key() == GLFW.GLFW_KEY_DOWN) {
+            if (keyEvent.key() == InputConstants.KEY_DOWN) {
                 this.cycle(1);
                 return true;
             }
-            if (keyEvent.key() == GLFW.GLFW_KEY_ENTER) {
+            if (keyEvent.key() == InputConstants.KEY_RETURN) {
                 this.useSuggestion();
                 return true;
             }

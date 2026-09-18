@@ -8,7 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -116,9 +116,9 @@ public class ItemPickupGoal extends Goal {
         DamageSource damageSource1 = this.entity.damageSources().mobAttack(this.entity);
         DamageSource damageSource2 = damageSource1;
         if (stack.getItem() instanceof BowItem)
-            damageSource1 = this.entity.damageSources().arrow(EntityType.ARROW.create(this.entity.level(), EntitySpawnReason.TRIGGERED), this.entity);
+            damageSource1 = this.entity.damageSources().arrow(EntityTypes.ARROW.create(this.entity.level(), EntitySpawnReason.TRIGGERED), this.entity);
         if (currentEquipped.getItem() instanceof BowItem)
-            damageSource2 = this.entity.damageSources().arrow(EntityType.ARROW.create(this.entity.level(), EntitySpawnReason.TRIGGERED), this.entity);
+            damageSource2 = this.entity.damageSources().arrow(EntityTypes.ARROW.create(this.entity.level(), EntitySpawnReason.TRIGGERED), this.entity);
         double d1 = EnchantmentHelper.modifyDamage((ServerLevel) this.entity.level(), stack, target, damageSource1, 1);
         double d2 = EnchantmentHelper.modifyDamage((ServerLevel) this.entity.level(), currentEquipped, target, damageSource2, 1);
         return d1 > d2;

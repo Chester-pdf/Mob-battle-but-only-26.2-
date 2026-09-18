@@ -7,7 +7,7 @@ modId="mobbattle"
 version="${version}"
 displayName="Mob Battle Mod"
 displayURL = "${homepage_neoforge}"
-logoFile="icon.png"
+iconFile = "icon.png"
 authors="Flemmli97"
 description='''Creative utensils in creating spectacular mob battles'''
 [[dependencies.mobbattle]]

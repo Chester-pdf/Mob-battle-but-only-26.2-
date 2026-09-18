@@ -1,3 +1,8 @@
+Mob Battle 2.8.1
+================
+- Update 26.3
+- Fix perimeter sometimes not tp mobs
+
 Mob Battle 2.8.0
 ================
 - Adds a perimeter tool:

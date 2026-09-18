@@ -1,5 +1,6 @@
 package io.github.flemmli97.mobbattle.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.flemmli97.mobbattle.MobBattle;
 import io.github.flemmli97.mobbattle.client.gui.EffectScreen;
@@ -20,9 +21,9 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.ShapeRenderer;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.state.level.LevelRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
@@ -36,7 +37,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -48,7 +48,7 @@ public class ClientHandler {
 
     public static void registerKeyBinding(Function<Identifier, KeyMapping.Category> categoryRegister, Consumer<KeyMapping> consumer) {
         ClientHandler.mobBattleCategory = categoryRegister.apply(MobBattle.of("keycategory"));
-        consumer.accept(ClientHandler.itemFunction = new KeyMapping(ExtendedItem.KEY_ID, GLFW.GLFW_KEY_V, mobBattleCategory));
+        consumer.accept(ClientHandler.itemFunction = new KeyMapping(ExtendedItem.KEY_ID, InputConstants.KEY_V, mobBattleCategory));
     }
 
     public static void keyEvent() {
@@ -76,41 +76,40 @@ public class ClientHandler {
         return false;
     }
 
-    public static void render(PoseStack stack) {
+    public static void render(PoseStack stack, SubmitNodeCollector collector, LevelRenderState levelRenderState) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
         ItemStack heldItem = player.getMainHandItem();
         if (heldItem.getItem() == MobBattleItems.MOB_ARMY.get() || heldItem.getItem() == MobBattleItems.MOB_EQUIP.get()) {
             AreaPositionComponent comp = heldItem.get(MobBattleDataComponents.BOX.get());
             if (comp != null && comp.first() != null && comp.second() != null)
-                ClientHandler.renderBlockOutline(stack, Minecraft.getInstance().renderBuffers().bufferSource(), comp.first(), comp.second());
+                ClientHandler.renderBlockOutline(stack, collector, comp.first(), comp.second());
         }
-        ClientPerimeterData.render(player, stack);
+        ClientPerimeterData.render(player, stack, collector, levelRenderState);
     }
 
     public static void openEffectGui() {
-        Minecraft.getInstance().setScreen(new EffectScreen());
+        Minecraft.getInstance().setScreenAndShow(new EffectScreen());
     }
 
-    public static void renderBlockOutline(PoseStack stack, MultiBufferSource.BufferSource buffer, BlockPos pos, BlockPos pos2) {
+    public static void renderBlockOutline(PoseStack stack, SubmitNodeCollector collector, BlockPos pos, BlockPos pos2) {
         AABB aabb = Utils.getBoundingBoxPositions(pos, pos2).deflate(0.05);
-        renderShapeOutline(stack, buffer, Shapes.create(aabb), ARGB.colorFromFloat(0.5F, 0.5F, 1, 1));
+        renderShapeOutline(stack, collector, Shapes.create(aabb), ARGB.colorFromFloat(0.5F, 0.5F, 1, 1));
     }
 
-    public static void renderShapeOutline(PoseStack stack, MultiBufferSource.BufferSource buffer, VoxelShape shape, int color) {
-        Camera camera = Minecraft.getInstance().gameRenderer.getMainCamera();
+    public static void renderShapeOutline(PoseStack stack, SubmitNodeCollector collector, VoxelShape shape, int color) {
+        Camera camera = Minecraft.getInstance().gameRenderer.mainCamera();
         Vec3 vec = camera.position();
         stack.pushPose();
         stack.translate(-vec.x, -vec.y, -vec.z);
-        ShapeRenderer.renderShape(stack, buffer.getBuffer(RenderTypes.lines()), shape, 0, 0, 0, color, 1);
-        buffer.endBatch(RenderTypes.LINES);
+        collector.submitShapeOutline(stack, shape, RenderTypes.lines(), color, 1, true);
         stack.popPose();
     }
 
     public static void openItemScreen(InteractionHand hand, S2CSpawnEggScreen.ScreenType type) {
         switch (type) {
-            case SPAWN_EGG -> Minecraft.getInstance().setScreen(new SpawnEggScreen(hand));
-            case PERIMETER -> Minecraft.getInstance().setScreen(new PerimeterSettingScreen(hand));
+            case SPAWN_EGG -> Minecraft.getInstance().setScreenAndShow(new SpawnEggScreen(hand));
+            case PERIMETER -> Minecraft.getInstance().setScreenAndShow(new PerimeterSettingScreen(hand));
         }
     }
 

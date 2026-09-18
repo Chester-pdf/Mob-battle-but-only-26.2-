@@ -13,7 +13,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
 public class ClientEvents {
@@ -26,8 +26,8 @@ public class ClientEvents {
     }
 
     @SubscribeEvent
-    public void render(RenderLevelStageEvent.AfterOpaqueFeatures event) {
-        ClientHandler.render(event.getPoseStack());
+    public void render(SubmitCustomGeometryEvent event) {
+        ClientHandler.render(event.getPoseStack(), event.getSubmitNodeCollector(), event.getLevelRenderState());
     }
 
     @SubscribeEvent(receiveCanceled = true)

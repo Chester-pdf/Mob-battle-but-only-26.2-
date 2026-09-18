@@ -2,7 +2,7 @@ package io.github.flemmli97.mobbattle.mixin;
 
 import io.github.flemmli97.mobbattle.common.utils.ActiveTargetMobbattle;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.warden.Warden;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +16,7 @@ public class WardenMixin {
 
     @Inject(method = "canTargetEntity", at = @At("HEAD"), cancellable = true)
     private void targetWarden(@Nullable Entity entity, CallbackInfoReturnable<Boolean> info) {
-        if (((ActiveTargetMobbattle) this).mobbattle$IsActiveTargeting() && entity instanceof LivingEntity living && living.getType() == EntityType.WARDEN)
+        if (((ActiveTargetMobbattle) this).mobbattle$IsActiveTargeting() && entity instanceof LivingEntity living && living.getType() == EntityTypes.WARDEN)
             info.setReturnValue(true);
     }
 }

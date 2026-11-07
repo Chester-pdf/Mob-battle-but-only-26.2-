@@ -85,7 +85,6 @@ public class PerimeterTool extends Item implements ExtendedItem {
             ItemStack stack = player.getItemInHand(hand);
             if (stack.has(MobBattleDataComponents.PERIMETER_REMOVE.get())) {
                 PerimeterData.get(serverPlayer.level()).setPerimeter(serverPlayer.level(), null);
-                player.swing(hand, true);
             } else {
                 CrossPlatformStuff.INSTANCE.sendToClient(new S2CSpawnEggScreen(hand, S2CSpawnEggScreen.ScreenType.PERIMETER), serverPlayer);
             }

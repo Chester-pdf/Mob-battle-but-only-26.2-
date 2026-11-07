@@ -39,6 +39,5 @@ plugins {
 
 include("common")
 include("fabric")
-include("neoforge")
 
 rootProject.name = "Mob Battle"
